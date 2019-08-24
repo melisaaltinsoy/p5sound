@@ -15,7 +15,7 @@ function setup() {
 
   // song loaded during preload(), ready to play in setup()
   song.play();
-  background(0, 255, 0);
+  
 }
 
 function draw() {
