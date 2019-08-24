@@ -16,9 +16,16 @@ function setup() {
   // song loaded during preload(), ready to play in setup()
   song.play();
   
+  // create a new Amplitude analyzer
+  analyzer = new p5.Amplitude();
+
+  // Patch the input to an volume analyzer
+  analyzer.setInput(song);
 }
 
 function draw() {
+  background(255);
+
   // Get the average (root mean square) amplitude
   let rms = analyzer.getLevel();
   fill(127);
@@ -28,14 +35,3 @@ function draw() {
   ellipse(width / 2, height / 2, 10 + rms * 200, 10 + rms * 200);
 }
 
-
-function mousePressed() {
-  if (song.isPlaying()) {
-    // .isPlaying() returns a boolean
-    song.pause();
-    background(255, 0, 0);
-  } else {
-    song.play(); // playback will resume from the pause position
-    background(0, 255, 0);
-  }
-}
