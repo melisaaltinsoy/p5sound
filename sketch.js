@@ -1,14 +1,55 @@
-var song;
+class Doorbell {
+  constructor(x_, y_, r_) {
+    // Location and size
+    this.x = x_;
+    this.y = y_;
+    this.r = r_;
+  }
+  // Is a point inside the doorbell? (used for mouse rollover, etc.)
+  contains(mx, my) {
+    return dist(mx, my, this.x, this.y) < this.r;
+  }
 
-function preload(){
-     song = loadSound("rainbow.mp3");
+  // Show the doorbell (hardcoded colors, could be improved)
+  display(mx, my) {
+    if (this.contains(mx, my)) {
+      fill(100);
+    } else {
+      fill(175);
+    }
+    stroke(0);
+    strokeWeight(4);
+    ellipse(this.x, this.y, this.r, this.r);
+  }
 }
 
-function setup(){
-    createCanvas(200,200);
-    song.play();
+// A sound file object
+let dingdong;
+
+// A doorbell object (that will trigger the sound)
+let doorbell;
+
+function setup() {
+  createCanvas(200, 200);
+
+  // Load the sound file.
+  // We have included both an MP3 and an OGG version.
+  soundFormats('mp3', 'ogg');
+  dingdong = loadSound('assets/doorbell.mp3');
+
+  // Create a new doorbell
+  doorbell = new Doorbell(width / 2, height / 2, 64);
 }
 
-function draw(){
-    background(0);
+function draw() {
+  background(255);
+  // Show the doorbell
+  doorbell.display(mouseX, mouseY);
+}
+
+function mousePressed() {
+  // If the user clicks on the doorbell, play the sound!
+  if (doorbell.contains(mouseX, mouseY)) {
+    dingdong.play();
+  }
 }
